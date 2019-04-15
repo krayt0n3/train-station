@@ -31,11 +31,17 @@
     var min = d.getMinutes();
     var current = new Date(year, month, day, hour, min);
     var compare = new Date(year, month, day, split[0], split[1]);
-    let diff = compare - current
+    let diff = current - compare;
+    let com = moment.unix(diff).format("HH:mm");
+    let c = moment.unix(current).format("HH:mm");
+    let co = moment.unix(compare).format("HH:mm");
     console.log(m);
     console.log(n); 
-    console.log(diff);
-    
+    console.log(current); 
+    console.log(compare);
+    console.log(c); 
+    console.log(co); 
+    console.log(com);
     
   
     database.ref().push({
