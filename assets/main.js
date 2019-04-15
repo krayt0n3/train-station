@@ -19,7 +19,24 @@
     let train = $("#train-name").val();
     let destination = $("#destination").val();
     let time = $("#train-time").val();
+    let split = time.split(':');
     let frequency = $("#frequency").val();
+    var m = moment().format(time, 'hh:mm a');
+    var n = moment().format(frequency, 'mm');
+    var d = new Date();
+    var year = d.getFullYear();
+    var month = d.getMonth();
+    var day = d.getDate();
+    var hour = d.getHours();
+    var min = d.getMinutes();
+    var current = new Date(year, month, day, hour, min);
+    var compare = new Date(year, month, day, split[0], split[1]);
+    let diff = compare - current
+    console.log(m);
+    console.log(n); 
+    console.log(diff);
+    
+    
   
     database.ref().push({
       train: train,
@@ -33,12 +50,12 @@
     function(snapshot) {
       console.log(snapshot.val());
       var months = moment(snapshot.val().startDate, "MM/DD/YYYY");
-      var now = moment().format(date);
+      //var now = moment().format(date);
       let today = moment();
       let difference = today.diff(months, "months");
       var totalBilled = difference * snapshot.val().monthlyRate;
   
-      console.log(difference);
+      //console.log(difference);
   
       $("tbody").append(`
         <tr>
