@@ -13,6 +13,8 @@
 
   var database = firebase.database();
 
+  
+
 
   $("#submit").click(function(event) {
     event.preventDefault();
@@ -21,33 +23,32 @@
     let time = $("#train-time").val();
     let split = time.split(':');
     let frequency = $("#frequency").val();
-    var m = moment().format(time, 'hh:mm a');
-    var n = moment().format(frequency, 'mm');
-    var d = new Date();
-    var year = d.getFullYear();
-    var month = d.getMonth();
-    var day = d.getDate();
-    var hour = d.getHours();
-    var min = d.getMinutes();
-    var current = new Date(year, month, day, hour, min);
-    var compare = new Date(year, month, day, split[0], split[1]);
-    let diff = current - compare;
-    let com = moment.unix(diff).format("HH:mm");
-    let c = moment.unix(current).format("HH:mm");
-    let co = moment.unix(compare).format("HH:mm");
-    console.log(m);
-    console.log(n); 
-    console.log(current); 
-    console.log(compare);
-    console.log(c); 
-    console.log(co); 
-    console.log(com);
-    
-  
+    var current = new Date();
+    var year = current.getFullYear();
+    var month = current.getMonth();
+    var day = current.getDate();
+    var hour = split[0];
+    var min = split[1];
+    var trainTime = new Date(year, month, day, hour, min);
+    var currentTimeStamp = moment(current).unix();
+    var timestamp = moment(trainTime).unix();
+    var convertedCurrent = moment(current).format('hh:mm');
+    var convertedtrainTime = moment(trainTime).format('hh:mm');
+    var difference = $((currentTimeStamp - timestamp));
+    var str = JSON.stringify(difference);
+    var increment = $((timestamp + frequency * 60 * 1000));
+    var arrival = moment(increment).format('hh:mm');
+    console.log(moment(increment).format('hh:mm')); 
+    console.log(current);
+    console.log(convertedCurrent);
+    console.log(convertedtrainTime);
+      
     database.ref().push({
       train: train,
       destination: destination,
-      frequency: frequency
+      frequency: frequency,
+      arrival: arrival,
+      difference: difference
     });
   });
   
@@ -68,6 +69,8 @@
             <td id="employee-name">${snapshot.val().train}</td>
             <td id="place">${snapshot.val().destination}</td>
             <td id="multiple">${snapshot.val().frequency}</td>
+            <td id="multiple">${snapshot.val().arrival}</td>
+            <td id="multiple">${snapshot.val().difference}</td>
             <hr>
         </tr>
       `);
